@@ -36,24 +36,47 @@ class MeinDialog(QtWidgets.QDialog):
     
     
     def onUpdate(self):  
-    
+        #update life EXAM
+        line = "Updating LiFE Exam...\n"
+        self.ui.info.insertPlainText(line)  
+        app.processEvents()  # dirty workaround to update textedit while a blocking process is running
         cmd = "cd ~/.life/applications/life-exam && git pull " 
-
         proc = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
         for line in iter(proc.stderr.readline, b''):
             print line, self.ui.info.insertPlainText(line)
+            app.processEvents()
         for line in iter(proc.stdout.readline, b''):
             print line, self.ui.info.insertPlainText(line)  
+            app.processEvents()
         proc.communicate()     
         
+        #update life USBCREATOR
+        line = "\nUpdating LiFE USBCreator...\n"
+        self.ui.info.insertPlainText(line)  
+        app.processEvents()
         cmd = "cd ~/.life/applications/life-usbcreator && git pull " 
-
         proc = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
         for line in iter(proc.stderr.readline, b''):
             print line, self.ui.info.insertPlainText(line)
+            app.processEvents()
         for line in iter(proc.stdout.readline, b''):
             print line, self.ui.info.insertPlainText(line)  
-        proc.communicate()     
+            app.processEvents()
+        proc.communicate()
+        
+        #update life UPDATE
+        line = "\nUpdating LiFE Update...\n"
+        self.ui.info.insertPlainText(line)  
+        app.processEvents()
+        cmd = "cd ~/.life/applications/life-update && git pull " 
+        proc = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
+        for line in iter(proc.stderr.readline, b''):
+            print line, self.ui.info.insertPlainText(line)
+            app.processEvents()
+        for line in iter(proc.stdout.readline, b''):
+            print line, self.ui.info.insertPlainText(line)  
+            app.processEvents()
+        proc.communicate()   
     
         
        
