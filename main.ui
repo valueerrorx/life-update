@@ -106,7 +106,7 @@
              </size>
             </property>
             <property name="text">
-             <string>Update LiFE</string>
+             <string>LiFE Update starten</string>
             </property>
            </widget>
           </item>
@@ -133,7 +133,11 @@
            <widget class="QWidget" name="widget_4" native="true">
             <layout class="QVBoxLayout" name="verticalLayout_2">
              <item>
-              <widget class="QTextBrowser" name="info"/>
+              <widget class="QTextBrowser" name="info">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -144,6 +148,13 @@
        <item>
         <widget class="QWidget" name="widget_5" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QLabel" name="inet">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
           <item>
            <spacer name="horizontalSpacer_3">
             <property name="orientation">

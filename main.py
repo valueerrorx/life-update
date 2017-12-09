@@ -33,52 +33,58 @@ class Updater(threading.Thread):
     def update(self):
         #update life EXAM
         line = "Updating LiFE Exam...\n"
-        self.mainui.info.insertPlainText(line)  
+ 
+        self.mainui.line = line
+        self.mainui.updatesignal.emit()
     
         cmd = "cd ~/.life/applications/life-exam && git pull " 
         proc = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
         for line in iter(proc.stderr.readline, b''):
-            print line, self.mainui.info.insertPlainText(line)
-        
+            self.mainui.line = line
+            self.mainui.updatesignal.emit()
         for line in iter(proc.stdout.readline, b''):
-            print line, self.mainui.info.insertPlainText(line)  
-    
+            self.mainui.line = line
+            self.mainui.updatesignal.emit()
         proc.communicate()     
         
         
         
         #update life USBCREATOR
         line = "\nUpdating LiFE USBCreator...\n"
-        self.mainui.info.insertPlainText(line)  
-
+        self.mainui.line = line
+        self.mainui.updatesignal.emit()
+        
         cmd = "cd ~/.life/applications/life-usbcreator && git pull " 
         proc = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
         for line in iter(proc.stderr.readline, b''):
-            print line, self.mainui.info.insertPlainText(line)
-        
+            self.mainui.line = line
+            self.mainui.updatesignal.emit()
         for line in iter(proc.stdout.readline, b''):
-            print line, self.mainui.info.insertPlainText(line)  
-        
+            self.mainui.line = line
+            self.mainui.updatesignal.emit()
         proc.communicate()
         
         
         
         #update life UPDATE
         line = "\nUpdating LiFE Update...\n"
-        self.mainui.info.insertPlainText(line)  
-    
+        self.mainui.line = line
+        self.mainui.updatesignal.emit()
+        
         cmd = "cd ~/.life/applications/life-update && git pull " 
         proc = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
         for line in iter(proc.stderr.readline, b''):
-            print line, self.mainui.info.insertPlainText(line)
-        
+            self.mainui.line = line
+            self.mainui.updatesignal.emit()
         for line in iter(proc.stdout.readline, b''):
-            print line, self.mainui.info.insertPlainText(line)  
-        
+            self.mainui.line = line
+            self.mainui.updatesignal.emit()
         proc.communicate() 
         
         self.stop = True
-        print "finished"
+        line = "\nFinished!\n"
+        self.mainui.line = line
+        self.mainui.updatesignal.emit()
             
   
 
@@ -104,13 +110,13 @@ class InetChecker(threading.Thread):
     def _checkOnline(self):
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.connect(("gmail.com",80))
+            s.connect(("github.com",80))
             s.close()
             print "online"
             self.mainui.onsignal.emit()
             return True
         except:
-            print "offline"
+            print "offline"        
             self.mainui.offsignal.emit()
             return False
 
@@ -121,6 +127,7 @@ class InetChecker(threading.Thread):
 class MeinDialog(QtWidgets.QDialog):
     onsignal = QtCore.pyqtSignal()   # use signals and slots to talk between the UI dialog and the python thread otherwise it will throw warnings all over the place
     offsignal = QtCore.pyqtSignal()
+    updatesignal = QtCore.pyqtSignal()
     
     def __init__(self):
         QtWidgets.QDialog.__init__(self)
@@ -135,21 +142,30 @@ class MeinDialog(QtWidgets.QDialog):
        
         self.onsignal.connect(lambda: self.uienable())    #setup custom slots
         self.offsignal.connect(lambda: self.uidisable())
+        self.updatesignal.connect(lambda: self.uiupdate())
 
         self.check = True;
-
+        self.line = ""
 
     def uienable(self):
         self.ui.update.setEnabled(True)
+        line = "Connection to Github established!"
+        self.ui.inet.setText(line)  
      
      
-    def uidisable(self):
+    def uidisable(self):   
+        line = "No Internetconnection!"
+        self.ui.inet.setText(line)  
+        
         self.ui.update.setEnabled(False)
-    
+        
+        
+    def uiupdate(self):
+        self.ui.info.insertPlainText(self.line)  
     
     def onUpdate(self): 
         self.check = False;
-        update = Updater(self.ui)
+        update = Updater(self)
         update.start()
         
         
