@@ -128,6 +128,7 @@ class MeinDialog(QtWidgets.QDialog):
     onsignal = QtCore.pyqtSignal()   # use signals and slots to talk between the UI dialog and the python thread otherwise it will throw warnings all over the place
     offsignal = QtCore.pyqtSignal()
     updatesignal = QtCore.pyqtSignal()
+    finishedsignal = QtCore.pyqtSignal()
     
     def __init__(self):
         QtWidgets.QDialog.__init__(self)
@@ -143,18 +144,18 @@ class MeinDialog(QtWidgets.QDialog):
         self.onsignal.connect(lambda: self.uienable())    #setup custom slots
         self.offsignal.connect(lambda: self.uidisable())
         self.updatesignal.connect(lambda: self.uiupdate())
-
+        self.finishedsignal.connect(lambda: self.uifinished())
         self.check = True;
         self.line = ""
 
     def uienable(self):
         self.ui.update.setEnabled(True)
-        line = "Connection to Github established!"
+        line = "Internetverbindung aktiv!"
         self.ui.inet.setText(line)  
      
      
     def uidisable(self):   
-        line = "No Internetconnection!"
+        line = "Keine Internetverbindung!"
         self.ui.inet.setText(line)  
         
         self.ui.update.setEnabled(False)
@@ -167,8 +168,10 @@ class MeinDialog(QtWidgets.QDialog):
         self.check = False;
         update = Updater(self)
         update.start()
-        
-        
+    
+    def uifinished(self):
+        line = "Update Abgeschlossen!"
+        self.ui.inet.setText(line)  
        
 
 
