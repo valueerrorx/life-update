@@ -84,7 +84,7 @@ class Updater(threading.Thread):
         self.stop = True
         line = "\nFinished!\n"
         self.mainui.line = line
-        self.mainui.updatesignal.emit()
+        self.mainui.finishedsignal.emit()
             
   
 
