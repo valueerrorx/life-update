@@ -150,7 +150,7 @@ class MeinDialog(QtWidgets.QDialog):
 
     def uienable(self):
         self.ui.update.setEnabled(True)
-        line = "Internetverbindung aktiv!"
+        line = "Internetanbindung ok!"
         self.ui.inet.setText(line)  
      
      

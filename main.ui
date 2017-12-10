@@ -154,7 +154,7 @@
           <item>
            <widget class="QLabel" name="inet">
             <property name="text">
-             <string/>
+             <string>Überprüfe Internetanbindung ...</string>
             </property>
            </widget>
           </item>
