@@ -97,6 +97,51 @@ class Updater(threading.Thread):
         time.sleep(1)   
  
      
+     
+           #update life FIRSTSTART
+        line = "\nUpdating LiFE Firststart...\n"
+        self.mainui.line = line
+        self.mainui.updatesignal.emit()
+        
+        cmd = "cd ~/.life/applications/life-firststart && git pull " 
+        proc3 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
+        for line in iter(proc3.stderr.readline, b''):
+            if line:
+                self.mainui.line = line.decode()
+                self.mainui.updatesignal.emit()
+        
+        for line in iter(proc3.stdout.readline, b''):
+            if line:
+                self.mainui.line = line.decode()
+                self.mainui.updatesignal.emit()
+        proc3.communicate() 
+        
+        
+        time.sleep(1)   
+     
+        
+        #update life builder
+        line = "\nUpdating LiFE Builder...\n"
+        self.mainui.line = line
+        self.mainui.updatesignal.emit()
+        
+        cmd = "cd ~/.life/applications/life-builder && git pull " 
+        proc4 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
+        for line in iter(proc4.stderr.readline, b''):
+            if line:
+                self.mainui.line = line.decode()
+                self.mainui.updatesignal.emit()
+        
+        for line in iter(proc4.stdout.readline, b''):
+            if line:
+                self.mainui.line = line.decode()
+                self.mainui.updatesignal.emit()
+        proc4.communicate() 
+        
+        
+        time.sleep(1)   
+        
+        
         
 
         self.mainui.finishedsignal.emit()
