@@ -221,16 +221,16 @@ class MeinDialog(QtWidgets.QDialog):
         
         
 
-    def fixFilePermissions(folder):
+    def fixFilePermissions(self, folder):
         if folder:
             if folder.startswith('/home/'):  # don't EVER change permissions outside of /home/
-                print "fixing file permissions"
+                print ("fixing file permissions")
                 chowncommand = "sudo chown -R %s:%s %s" % (USER, USER, folder)
                 os.system(chowncommand)
             else:
-                print "exam folder location outside of /home/ is not allowed"
+                print ("exam folder location outside of /home/ is not allowed")
         else:
-            print "no folder given"
+            print ("no folder given")
 
 
     def uienable(self):
