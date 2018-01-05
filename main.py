@@ -11,7 +11,7 @@ import socket
 
 USER = subprocess.check_output("logname", shell=True).rstrip()
 USER_HOME_DIR = os.path.join("/home", str(USER))
-
+WORK_DIRECTORY = os.path.join(USER_HOME_DIR, ".life")
 
 
 class Updater(threading.Thread):
@@ -216,6 +216,22 @@ class MeinDialog(QtWidgets.QDialog):
         self.finishedsignal.connect(lambda: self.uifinished())
         self.check = True;
         self.line = ""
+        
+        self.fixFilePermissions(WORK_DIRECTORY)
+        
+        
+
+    def fixFilePermissions(folder):
+        if folder:
+            if folder.startswith('/home/'):  # don't EVER change permissions outside of /home/
+                print "fixing file permissions"
+                chowncommand = "sudo chown -R %s:%s %s" % (USER, USER, folder)
+                os.system(chowncommand)
+            else:
+                print "exam folder location outside of /home/ is not allowed"
+        else:
+            print "no folder given"
+
 
     def uienable(self):
         self.ui.update.setEnabled(True)
