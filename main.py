@@ -50,7 +50,6 @@ class Updater(threading.Thread):
                 self.mainui.updatesignal.emit()
         proc.communicate()     
         
-
         time.sleep(1)
             
         
@@ -248,7 +247,8 @@ class MeinDialog(QtWidgets.QDialog):
         
     def uiupdate(self):
         print (self.line)
-        self.ui.info.insertPlainText(self.line)  
+        self.ui.info.insertPlainText(self.line) 
+        self.ui.info.verticalScrollBar().setValue(self.ui.info.verticalScrollBar().maximum())
     
     def onUpdate(self): 
         self.ui.update.setEnabled(False)
