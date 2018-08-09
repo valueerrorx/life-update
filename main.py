@@ -37,7 +37,7 @@ class Updater(threading.Thread):
         self.mainui.line = line
         self.mainui.updatesignal.emit()
     
-        cmd = "cd ~/.life/applications/life-exam && git pull " 
+        cmd = "cd %s/applications/life-exam && git pull " %(WORK_DIRECTORY)
         proc = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
         for line in iter(proc.stderr.readline, b''):
             if line:
@@ -58,7 +58,7 @@ class Updater(threading.Thread):
         self.mainui.line = line
         self.mainui.updatesignal.emit()
         
-        cmd = "cd ~/.life/applications/life-usbcreator && git pull " 
+        cmd = "cd %s/applications/life-usbcreator && git pull " %(WORK_DIRECTORY)
         proc1 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
         for line in iter(proc1.stderr.readline, b''):
             if line:
@@ -79,7 +79,7 @@ class Updater(threading.Thread):
         self.mainui.line = line
         self.mainui.updatesignal.emit()
         
-        cmd = "cd ~/.life/applications/life-update && git pull " 
+        cmd = "cd %s/applications/life-update && git pull " %(WORK_DIRECTORY)
         proc2 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
         for line in iter(proc2.stderr.readline, b''):
             if line:
@@ -102,7 +102,7 @@ class Updater(threading.Thread):
         self.mainui.line = line
         self.mainui.updatesignal.emit()
         
-        cmd = "cd ~/.life/applications/life-firststart && git pull " 
+        cmd = "cd %s/applications/life-firststart && git pull " %(WORK_DIRECTORY)
         proc3 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
         for line in iter(proc3.stderr.readline, b''):
             if line:
@@ -124,7 +124,7 @@ class Updater(threading.Thread):
         self.mainui.line = line
         self.mainui.updatesignal.emit()
         
-        cmd = "cd ~/.life/applications/life-builder && git pull " 
+        cmd = "cd %s/applications/life-builder && git pull " %(WORK_DIRECTORY)
         proc4 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
         for line in iter(proc4.stderr.readline, b''):
             if line:
