@@ -9,7 +9,7 @@ import threading
 import time
 import socket
 
-USER = subprocess.check_output("logname", shell=True).rstrip()
+USER = subprocess.check_output("logname", shell=True).rstrip().decode()
 USER_HOME_DIR = os.path.join("/home", str(USER))
 WORK_DIRECTORY = os.path.join(USER_HOME_DIR, ".life")
 
