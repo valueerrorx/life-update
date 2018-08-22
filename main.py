@@ -51,27 +51,7 @@ class Updater(threading.Thread):
         proc.communicate()     
         
         time.sleep(1)
-            
-        
-        #update life USBCREATOR
-        line = "\nUpdating LiFE USBCreator...\n"
-        self.mainui.line = line
-        self.mainui.updatesignal.emit()
-        
-        cmd = "cd %s/applications/life-usbcreator && git pull " %(WORK_DIRECTORY)
-        proc1 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
-        for line in iter(proc1.stderr.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
-       
-        for line in iter(proc1.stdout.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
-        proc1.communicate()
-       
-        time.sleep(1)
+
         
         
         #update life UPDATE
