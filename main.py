@@ -52,6 +52,30 @@ class Updater(threading.Thread):
         
         time.sleep(1)
 
+
+
+          #update life nextcloudusers
+        line = "\nUpdating LiFE Nextcloudusers...\n"
+        self.mainui.line = line
+        self.mainui.updatesignal.emit()
+        
+        cmd = "cd %s/applications/life-nextcloudusers && git pull " %(WORK_DIRECTORY)
+        proc1 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
+        for line in iter(proc1.stderr.readline, b''):
+            if line:
+                self.mainui.line = line.decode()
+                self.mainui.updatesignal.emit()
+        
+        for line in iter(proc1.stdout.readline, b''):
+            if line:
+                self.mainui.line = line.decode()
+                self.mainui.updatesignal.emit()
+        proc1.communicate() 
+        
+        
+        time.sleep(1)   
+        
+        
         
         
         #update life UPDATE
@@ -121,7 +145,26 @@ class Updater(threading.Thread):
         time.sleep(1)   
         
         
+          #update life kiosk
+        line = "\nUpdating LiFE Kiosk...\n"
+        self.mainui.line = line
+        self.mainui.updatesignal.emit()
         
+        cmd = "cd %s/applications/life-kiosk && git pull " %(WORK_DIRECTORY)
+        proc5 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
+        for line in iter(proc5.stderr.readline, b''):
+            if line:
+                self.mainui.line = line.decode()
+                self.mainui.updatesignal.emit()
+        
+        for line in iter(proc5.stdout.readline, b''):
+            if line:
+                self.mainui.line = line.decode()
+                self.mainui.updatesignal.emit()
+        proc5.communicate() 
+        
+        
+        time.sleep(1) 
 
         self.mainui.finishedsignal.emit()
         self.stop = True
