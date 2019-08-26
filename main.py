@@ -231,6 +231,7 @@ class MeinDialog(QtWidgets.QDialog):
         self.ui.setWindowIcon(QIcon(winicon))
         self.ui.update.clicked.connect(self.onUpdate)        # setup Slots
         self.ui.exit.clicked.connect(self.onAbbrechen)     
+        self.ui.fixperm.clicked.connect(lambda: self.fixFilePermissions(WORK_DIRECTORY))
        
         self.onsignal.connect(lambda: self.uienable())    #setup custom slots
         self.offsignal.connect(lambda: self.uidisable())
@@ -238,15 +239,14 @@ class MeinDialog(QtWidgets.QDialog):
         self.finishedsignal.connect(lambda: self.uifinished())
         self.check = True;
         self.line = ""
-        
-        self.fixFilePermissions(WORK_DIRECTORY)
-        
+
         
 
     def fixFilePermissions(self, folder):
         if folder:
             if folder.startswith('/home/'):  # don't EVER change permissions outside of /home/
                 print ("fixing file permissions")
+                print(WORK_DIRECTORY)
                 chowncommand = "sudo chown -R %s:%s %s" % (USER, USER, folder)
                 os.system(chowncommand)
             else:
