@@ -1,6 +1,8 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 import sys, os
+import yaml
+from pathlib import Path
 from PyQt5 import QtCore, uic, QtWidgets
 
 import subprocess
@@ -9,6 +11,7 @@ import time
 import socket
 from PyQt5.Qt import QIcon
 from widget.SwitchButton import SwitchButton
+from twisted.trial.test import moduleself
 
 USER = subprocess.check_output("logname", shell=True).rstrip().decode()
 USER_HOME_DIR = os.path.join("/home", str(USER))
@@ -141,8 +144,6 @@ class Updater(threading.Thread):
                 self.mainui.line = line.decode()
                 self.mainui.updatesignal.emit()
         proc4.communicate() 
-        
-        
         time.sleep(1)   
         
         
@@ -169,8 +170,6 @@ class Updater(threading.Thread):
 
         self.mainui.finishedsignal.emit()
         self.stop = True
-  
-
 
 
 class InetChecker(threading.Thread):
@@ -201,6 +200,7 @@ class InetChecker(threading.Thread):
             self.mainui.offsignal.emit()
             return False
 
+
 class MeinDialog(QtWidgets.QDialog):
     # use signals and slots to talk between the UI dialog and the python thread otherwise it will throw warnings all over the place
     onsignal = QtCore.pyqtSignal()   
@@ -208,14 +208,18 @@ class MeinDialog(QtWidgets.QDialog):
     updatesignal = QtCore.pyqtSignal()
     finishedsignal = QtCore.pyqtSignal()
     
+    __config_file = "config.yml"
+    
     def __init__(self):
         QtWidgets.QDialog.__init__(self)
-        scriptdir=os.path.dirname(os.path.abspath(__file__))
-        uifile=os.path.join(scriptdir,'main.ui')
-        winicon=os.path.join(scriptdir,'appicon.png')
-        
+        #rootDir of Application
+        self.rootDir = Path(__file__).parent
+        uifile=self.rootDir.joinpath('main.ui')
         self.ui = uic.loadUi(uifile)        # load UI
-        self.ui.setWindowIcon(QIcon(winicon))
+        
+        iconfile=self.rootDir.joinpath('appicon.png').as_posix()
+        self.ui.setWindowIcon(QIcon(iconfile))  # definiere icon für taskleiste
+        
         self.ui.update.clicked.connect(self.onUpdate)        # setup Slots
         self.ui.exit.clicked.connect(self.onAbbrechen)     
         self.ui.fixperm.clicked.connect(lambda: self.fixFilePermissions(WORK_DIRECTORY))
@@ -227,6 +231,8 @@ class MeinDialog(QtWidgets.QDialog):
         self.check = True;
         self.line = ""
         
+        #load Config
+        self.loadConfig()
         
         #Switch Button
         layout = self.ui.devLayout
@@ -280,14 +286,32 @@ class MeinDialog(QtWidgets.QDialog):
         self.ui.inet.setText(line)  
 
     def onAbbrechen(self):    # Exit button
+        self.check = False;
+        self.saveConfig()
+        time.sleep(1) 
         self.ui.close()
         os._exit(0)
+    
+    def loadConfig(self):
+        if os.path.isfile(self.__config_file): 
+            with open(self.__config_file, "r") as ymlfile:
+                cfg = yaml.safe_load(ymlfile)
         
-    def closeEvent(self, event):
-        ''' window tries to close '''
-        #stop every running thread set the Flag 
-        self.check = False;
+            #for section in cfg:
+                #print(section)
+            print(cfg["development"])
         
+    def saveConfig(self):
+        data ={
+            "development": {
+                "branch": "DEV",
+                "use": 1,
+            },
+        }
+        
+        with open(self.__config_file, "w") as outfile:
+            yaml.dump(data, outfile, default_flow_style=False)   
+            
         
 
 app = QtWidgets.QApplication(sys.argv)
