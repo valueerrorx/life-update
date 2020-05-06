@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 import sys, os
 from PyQt5 import QtCore, uic, QtWidgets
-from PyQt5.QtGui import *
 
 import subprocess
 import threading
 import time
 import socket
+from PyQt5.Qt import QIcon
+from widget.SwitchButton import SwitchButton
 
 USER = subprocess.check_output("logname", shell=True).rstrip().decode()
 USER_HOME_DIR = os.path.join("/home", str(USER))
@@ -54,7 +55,7 @@ class Updater(threading.Thread):
 
 
 
-          #update life nextcloudusers
+        #update life nextcloudusers
         line = "\nUpdating LiFE Nextcloudusers...\n"
         self.mainui.line = line
         self.mainui.updatesignal.emit()
@@ -101,7 +102,7 @@ class Updater(threading.Thread):
  
      
      
-           #update life FIRSTSTART
+        #update life FIRSTSTART
         line = "\nUpdating LiFE Firststart...\n"
         self.mainui.line = line
         self.mainui.updatesignal.emit()
@@ -145,7 +146,7 @@ class Updater(threading.Thread):
         time.sleep(1)   
         
         
-          #update life kiosk
+        #update life kiosk
         line = "\nUpdating LiFE Kiosk...\n"
         self.mainui.line = line
         self.mainui.updatesignal.emit()
@@ -169,9 +170,6 @@ class Updater(threading.Thread):
         self.mainui.finishedsignal.emit()
         self.stop = True
   
-
-
-
 
 
 
@@ -203,20 +201,9 @@ class InetChecker(threading.Thread):
             self.mainui.offsignal.emit()
             return False
 
-
-
-
-
-
-
-
-
-
-
-
-
 class MeinDialog(QtWidgets.QDialog):
-    onsignal = QtCore.pyqtSignal()   # use signals and slots to talk between the UI dialog and the python thread otherwise it will throw warnings all over the place
+    # use signals and slots to talk between the UI dialog and the python thread otherwise it will throw warnings all over the place
+    onsignal = QtCore.pyqtSignal()   
     offsignal = QtCore.pyqtSignal()
     updatesignal = QtCore.pyqtSignal()
     finishedsignal = QtCore.pyqtSignal()
@@ -239,6 +226,16 @@ class MeinDialog(QtWidgets.QDialog):
         self.finishedsignal.connect(lambda: self.uifinished())
         self.check = True;
         self.line = ""
+        
+        
+        #Switch Button
+        layout = self.ui.devLayout
+        layout.removeWidget(self.ui.dummySwitch)
+        
+        
+        # Text, LabelOn xPos, Text, LabelOff xPos, width
+        switchbtn = SwitchButton(self, "Ja", 15, "Nein", 25, 60)
+        layout.addWidget(switchbtn)
 
         
 
@@ -263,8 +260,7 @@ class MeinDialog(QtWidgets.QDialog):
      
     def uidisable(self):   
         line = "Keine Internetverbindung!"
-        self.ui.inet.setText(line)  
-        
+        self.ui.inet.setText(line)          
         self.ui.update.setEnabled(False)
         
         
@@ -282,18 +278,15 @@ class MeinDialog(QtWidgets.QDialog):
     def uifinished(self):
         line = "Update Abgeschlossen!"
         self.ui.inet.setText(line)  
-       
-
 
     def onAbbrechen(self):    # Exit button
         self.ui.close()
         os._exit(0)
-
-
-
-
-
-
+        
+    def closeEvent(self, event):
+        ''' window tries to close '''
+        #stop every running thread set the Flag 
+        self.check = False;
 
 
 
