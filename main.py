@@ -289,7 +289,6 @@ class MeinDialog(QtWidgets.QDialog):
         self.check = False;
         
 
-
 app = QtWidgets.QApplication(sys.argv)
 dialog = MeinDialog()
 dialog.ui.show()   #show user interface
