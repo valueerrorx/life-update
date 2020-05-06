@@ -274,6 +274,7 @@ class MeinDialog(QtWidgets.QDialog):
         print (self.line)
         self.ui.info.insertPlainText(self.line) 
         self.ui.info.verticalScrollBar().setValue(self.ui.info.verticalScrollBar().maximum())
+        
     
     def onUpdate(self): 
         self.ui.update.setEnabled(False)
