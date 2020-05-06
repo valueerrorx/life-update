@@ -290,7 +290,6 @@ class MeinDialog(QtWidgets.QDialog):
 
 
 
-
 app = QtWidgets.QApplication(sys.argv)
 dialog = MeinDialog()
 dialog.ui.show()   #show user interface

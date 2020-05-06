@@ -64,6 +64,7 @@ class SwitchButton(QtWidgets.QWidget):
         self.__ellipsemove.start()
         self.__value = not self.__value
 
+
     def paintEvent(self, event):
         s = self.size()
         qp = QtGui.QPainter()
