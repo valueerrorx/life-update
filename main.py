@@ -288,6 +288,7 @@ class MeinDialog(QtWidgets.QDialog):
         #stop every running thread set the Flag 
         self.check = False;
         
+        
 
 app = QtWidgets.QApplication(sys.argv)
 dialog = MeinDialog()
