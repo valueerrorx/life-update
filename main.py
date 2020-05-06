@@ -287,6 +287,7 @@ class MeinDialog(QtWidgets.QDialog):
         ''' window tries to close '''
         #stop every running thread set the Flag 
         self.check = False;
+        
 
 
 app = QtWidgets.QApplication(sys.argv)
