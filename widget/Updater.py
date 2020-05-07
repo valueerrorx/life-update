@@ -35,7 +35,7 @@ class Updater(threading.Thread):
             
             
     def update(self):
-        #update life EXAM
+        #update life EXAM ----------------------------------------------------------------------------------
         branches = self.mainui.branches
         if self.mainui.switchbtn.getValue():
             active_branch = branches["dev"]
@@ -43,6 +43,7 @@ class Updater(threading.Thread):
             active_branch = branches["stable"]
             
         self.mainui.log("Updating LiFE Exam...\n")
+        #switch to branch https://bluecast.tech/blog/git-switch-branch/
         
         #do we use DEV Version of life-exam, or stable
         #stable ... main, Development ... DEV
@@ -50,8 +51,6 @@ class Updater(threading.Thread):
         cmd = "cd %s/applications/life-exam " % (self.work_directory)
         cmd += "&& git remote set-url origin https://github.com/valueerrorx/life-exam.git"
         self.runCmd(cmd)
-        
-        
         
         #step 2
         cmd = "cd %s/applications/life-exam " % (self.work_directory)
@@ -62,127 +61,38 @@ class Updater(threading.Thread):
         cmd = "cd %s/applications/life-exam " % (self.work_directory)
         cmd += "&& git pull"
         self.runCmd(cmd)
-        
-        
-        
-        
-        #switch to branch https://bluecast.tech/blog/git-switch-branch/
-        #
-        
-    def work(self):
-        
-        
-        
 
 
-
-        #update life nextcloudusers
-        line = "\nUpdating LiFE Nextcloudusers...\n"
-        self.mainui.line = line
-        self.mainui.updatesignal.emit()
-        
+        #update life nextcloudusers ----------------------------------------------------------------------------------
+        self.mainui.log("\nUpdating LiFE Nextcloudusers...\n")
         cmd = "cd %s/applications/life-nextcloudusers && git pull " %(self.work_directory)
-        proc1 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
-        for line in iter(proc1.stderr.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
-        
-        for line in iter(proc1.stdout.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
-        proc1.communicate() 
+        self.runCmd(cmd)
         
         
-        time.sleep(1)   
-        
-        
-        
-        
-        #update life UPDATE
-        line = "\nUpdating LiFE Update...\n"
-        self.mainui.line = line
-        self.mainui.updatesignal.emit()
-        
+        #update life UPDATE ----------------------------------------------------------------------------------
+        self.mainui.log("\nUpdating LiFE Update...\n")
         cmd = "cd %s/applications/life-update && git pull " %(self.work_directory)
-        proc2 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
-        for line in iter(proc2.stderr.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
-        
-        for line in iter(proc2.stdout.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
-        proc2.communicate() 
-        
-        
-        time.sleep(1)   
- 
+        self.runCmd(cmd)
      
      
-        #update life FIRSTSTART
-        line = "\nUpdating LiFE Firststart...\n"
-        self.mainui.line = line
-        self.mainui.updatesignal.emit()
-        
+        #update life FIRSTSTART ----------------------------------------------------------------------------------
+        self.mainui.log("\nUpdating LiFE Firststart...\n")        
         cmd = "cd %s/applications/life-firststart && git pull " %(self.work_directory)
-        proc3 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
-        for line in iter(proc3.stderr.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
-        
-        for line in iter(proc3.stdout.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
-        proc3.communicate() 
-        
-        
-        time.sleep(1)   
+        self.runCmd(cmd)
      
         
-        #update life builder
-        line = "\nUpdating LiFE Builder...\n"
-        self.mainui.line = line
-        self.mainui.updatesignal.emit()
-        
+        #update life builder ----------------------------------------------------------------------------------
+        self.mainui.log("\nUpdating LiFE Builder...\n")                
         cmd = "cd %s/applications/life-builder && git pull " %(self.work_directory)
-        proc4 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
-        for line in iter(proc4.stderr.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
-        
-        for line in iter(proc4.stdout.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
-        proc4.communicate() 
-        time.sleep(1)   
+        self.runCmd(cmd) 
         
         
-        #update life kiosk
-        line = "\nUpdating LiFE Kiosk...\n"
-        self.mainui.line = line
-        self.mainui.updatesignal.emit()
+        #update life kiosk ----------------------------------------------------------------------------------
+        self.mainui.log("\nUpdating LiFE Kiosk...\n")
         
         cmd = "cd %s/applications/life-kiosk && git pull " %(self.work_directory)
-        proc5 = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
-        for line in iter(proc5.stderr.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
-        
-        for line in iter(proc5.stdout.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
-        proc5.communicate() 
-        time.sleep(1) 
+        self.runCmd(cmd)
+
 
         self.mainui.finishedsignal.emit()
         self.stop = True

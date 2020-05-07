@@ -113,9 +113,9 @@ class MeinDialog(QtWidgets.QDialog):
         
     def toggleDev(self):
         if self.switchbtn.getValue():
-            line = "life-exam > [Development] Version!\n"
-        else:
             line = "life-exam > [Stable] Version!\n"
+        else:
+            line = "life-exam > [Development] Version!\n"
         self.log(line)
     
     def loadConfig(self):
@@ -128,7 +128,7 @@ class MeinDialog(QtWidgets.QDialog):
             #print(cfg["development"])
             #print(cfg["development"]["use"])
             useit = cfg["development"]["use"]
-            if useit==1:
+            if useit==0:
                 self.switchbtn.setValue(True)
             else:
                 self.switchbtn.setValue(False)
@@ -138,9 +138,9 @@ class MeinDialog(QtWidgets.QDialog):
             self.branches["dev"] = cfg["development"]["dev_branch"]
         
     def saveConfig(self):
-        useit = 0
+        useit = 1
         if self.switchbtn.getValue():        
-            useit = 1 
+            useit = 0 
         data ={
             "development": {
                 "stable_branch": "master",
@@ -160,9 +160,7 @@ dialog = MeinDialog()
 dialog.ui.show()   
 
 #start inet checking thread
-#inet = InetChecker(dialog)
-#inet.start()
-
-dialog.onUpdate()   
+inet = InetChecker(dialog)
+inet.start()
 
 sys.exit(app.exec_())
