@@ -122,8 +122,6 @@ class Updater(threading.Thread):
                 self.mainui.line = line.decode()
                 self.mainui.updatesignal.emit()
         proc3.communicate() 
-        
-        
         time.sleep(1)   
      
         
