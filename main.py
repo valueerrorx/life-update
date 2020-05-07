@@ -122,6 +122,8 @@ class Updater(threading.Thread):
                 self.mainui.line = line.decode()
                 self.mainui.updatesignal.emit()
         proc3.communicate() 
+        
+        
         time.sleep(1)   
      
         
@@ -299,6 +301,8 @@ class MeinDialog(QtWidgets.QDialog):
             #for section in cfg:
                 #print(section)
             print(cfg["development"])
+
+            
         
     def saveConfig(self):
         data ={
