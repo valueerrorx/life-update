@@ -21,36 +21,58 @@ class Updater(threading.Thread):
             self.update()
             time.sleep(5)
             
+    def runCmd(self, cmd):
+        ''' runs a command '''
+        proc = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
+        for line in iter(proc.stderr.readline, b''):
+            self.mainui.log(line.decode())
+        
+        for line in iter(proc.stdout.readline, b''):
+            self.mainui.log(line.decode())
+        proc.communicate()
+            
+        time.sleep(0.5)
+            
             
     def update(self):
         #update life EXAM
-        branches = self.mainui.branches 
-        self.log("Updating LiFE Exam...\n")
+        branches = self.mainui.branches
+        if self.mainui.switchbtn.getValue():
+            active_branch = branches["dev"]
+        else:
+            active_branch = branches["stable"]
+            
+        self.mainui.log("Updating LiFE Exam...\n")
         
         #do we use DEV Version of life-exam, or stable
         #stable ... main, Development ... DEV
-        cmd = "cd %s/applications/life-exam " %(self.work_directory)
-        print(cmd)
+        #step1 back to https
+        cmd = "cd %s/applications/life-exam " % (self.work_directory)
+        cmd += "&& git remote set-url origin https://github.com/valueerrorx/life-exam.git"
+        self.runCmd(cmd)
+        
+        
+        
+        #step 2
+        cmd = "cd %s/applications/life-exam " % (self.work_directory)
+        cmd += "&& git checkout %s" % (active_branch)
+        self.runCmd(cmd)
+        
+        #step 3
+        cmd = "cd %s/applications/life-exam " % (self.work_directory)
+        cmd += "&& git pull"
+        self.runCmd(cmd)
+        
+        
+        
         
         #switch to branch https://bluecast.tech/blog/git-switch-branch/
-git switch SMan-Test
+        #
         
     def work(self):
-        #&& git pull
         
-        proc = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
-        for line in iter(proc.stderr.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
         
-        for line in iter(proc.stdout.readline, b''):
-            if line:
-                self.mainui.line = line.decode()
-                self.mainui.updatesignal.emit()
-        proc.communicate()     
         
-        time.sleep(1)
 
 
 

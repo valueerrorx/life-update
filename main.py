@@ -21,7 +21,7 @@ class MeinDialog(QtWidgets.QDialog):
     # use signals and slots to talk between the UI dialog and the python thread otherwise it will throw warnings all over the place
     onsignal = QtCore.pyqtSignal()   
     offsignal = QtCore.pyqtSignal()
-    updatesignal = QtCore.pyqtSignal()
+    updatesignal = QtCore.pyqtSignal(str)
     finishedsignal = QtCore.pyqtSignal()
     
     __config_file = "config.yml"
@@ -42,10 +42,9 @@ class MeinDialog(QtWidgets.QDialog):
        
         self.onsignal.connect(lambda: self.uienable())    #setup custom slots
         self.offsignal.connect(lambda: self.uidisable())
-        self.updatesignal.connect(lambda: self.uiupdate())
+        self.updatesignal.connect(self.uiupdate)
         self.finishedsignal.connect(lambda: self.uifinished())
         self.check = True;
-        self.line = ""
         
         #Switch Button
         layout = self.ui.devLayout
@@ -84,9 +83,8 @@ class MeinDialog(QtWidgets.QDialog):
         self.ui.update.setEnabled(False)
         
         
-    def uiupdate(self):
-        print (self.line)
-        self.ui.info.insertPlainText(self.line) 
+    def uiupdate(self, msg):
+        self.ui.info.insertPlainText(msg.strip()+"\n") 
         self.ui.info.verticalScrollBar().setValue(self.ui.info.verticalScrollBar().maximum())
         
     
@@ -110,8 +108,8 @@ class MeinDialog(QtWidgets.QDialog):
         
     def log(self, msg):
         ''' send Message to Log Box '''
-        self.line = msg
-        self.updatesignal.emit()
+        print (msg.strip())
+        self.updatesignal.emit(msg)
         
     def toggleDev(self):
         if self.switchbtn.getValue():
