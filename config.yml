@@ -1,3 +1,4 @@
 development:
-  branch: DEV
-  use: 1
+  dev_branch: DEV
+  stable_branch: master
+  use: 0

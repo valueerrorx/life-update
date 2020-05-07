@@ -1,6 +1,8 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 from PyQt5 import QtGui, QtWidgets, QtCore
+from PyQt5.Qt import Qt
+from PyQt5.QtGui import QPen, QBrush
 
 class SwitchButton(QtWidgets.QWidget):
     
@@ -28,11 +30,28 @@ class SwitchButton(QtWidgets.QWidget):
         self.__circle.move(2, 2)
         self.__labelon.move(l1, 2)
         self.__labeloff.move(l2, 2)
+        
+        self.__parent = parent
+        
+    def text(self):
+        return "SwitchButton"
+    
+    def getValue(self):
+        ''' get the value '''
+        return self.__value    
+    
+    def setValue(self, v):
+        ''' set value '''
+        if v!=self.__value:
+            self.mousePressEvent(None) 
 
     def setDuration(self, time):
         self.__duration = time
 
     def mousePressEvent(self, event):
+        #fire event to parent
+        self.__parent.toggleDev()
+        
         if not self.__enabled:
             return
 
@@ -74,11 +93,13 @@ class SwitchButton(QtWidgets.QWidget):
         qp.setPen(pen)
         qp.setBrush(QtGui.QColor(120, 120, 120))
         #qp.drawRoundedRect(0, 0, s.width(), s.height(), 12, 12)
-        lg = QtGui.QLinearGradient(35, 30, 35, 0)
-        lg.setColorAt(0, QtGui.QColor(210, 210, 210, 255))
-        lg.setColorAt(0.25, QtGui.QColor(255, 255, 255, 255))
-        lg.setColorAt(0.82, QtGui.QColor(255, 255, 255, 255))
-        lg.setColorAt(1, QtGui.QColor(210, 210, 210, 255))
+        #lg = QtGui.QLinearGradient(35, 30, 35, 0)
+        #lg.setColorAt(0, QtGui.QColor(210, 210, 210, 255))
+        #lg.setColorAt(0.25, QtGui.QColor(255, 255, 255, 255))
+        #lg.setColorAt(0.82, QtGui.QColor(255, 255, 255, 255))
+        #lg.setColorAt(1, QtGui.QColor(210, 210, 210, 255))
+        
+        lg=QBrush(QtGui.QColor(180, 180, 180), Qt.SolidPattern)
         qp.setBrush(lg)
         qp.drawRoundedRect(1, 1, s.width()-2, s.height()-2, 10, 10)
 
