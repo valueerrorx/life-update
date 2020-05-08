@@ -24,7 +24,7 @@ class MeinDialog(QtWidgets.QDialog):
     updatesignal = QtCore.pyqtSignal(str)
     finishedsignal = QtCore.pyqtSignal()
     
-    __config_file = "config.yml" 
+    __config_file = "config.yml"
     
     def __init__(self):
         QtWidgets.QDialog.__init__(self)
