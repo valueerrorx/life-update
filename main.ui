@@ -77,7 +77,7 @@
           <bool>true</bool>
          </property>
          <property name="indent">
-          <number>12</number>
+          <number>6</number>
          </property>
         </widget>
        </item>
@@ -96,42 +96,10 @@
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">margin-left:6px;</string>
+             <string notr="true"># use signals and slots to talk between the UI dialog and the python thread otherwise it will throw warnings all over the place</string>
             </property>
             <property name="text">
              <string>LiFE Update starten</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="fixperm">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>110</width>
-              <height>55</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">margin-right:6px;color:#666;</string>
-            </property>
-            <property name="text">
-             <string>Fix ownership</string>
             </property>
            </widget>
           </item>
@@ -139,11 +107,66 @@
         </widget>
        </item>
        <item>
+        <layout class="QHBoxLayout" name="devLayout">
+         <property name="leftMargin">
+          <number>6</number>
+         </property>
+         <property name="topMargin">
+          <number>6</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="text">
+            <string>LIFE Exam Development Version verwenden?</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="dummySwitch">
+           <property name="styleSheet">
+            <string notr="true">margin-right: 6px</string>
+           </property>
+           <property name="text">
+            <string>PushButton</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <widget class="QWidget" name="widget_7" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <widget class="QWidget" name="widget_4" native="true">
             <layout class="QVBoxLayout" name="verticalLayout_2">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QTextBrowser" name="info">
                <property name="styleSheet">
