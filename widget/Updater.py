@@ -10,11 +10,12 @@ class Updater(threading.Thread):
     periodically checks the internet connection 
     this is done it a separate thread
     """
-    def __init__(self, mainui, work_directory):
+    def __init__(self, mainui, work_directory, user):
         threading.Thread.__init__(self)
         self.mainui= mainui
         self.stop = False
         self.work_directory = work_directory
+        self.user = user
 
     def run(self):
         while self.stop == False:
@@ -23,18 +24,30 @@ class Updater(threading.Thread):
             
     def runCmd(self, cmd):
         ''' runs a command '''
-        proc = subprocess.Popen(cmd,  shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=1)
+        proc = subprocess.Popen(cmd,  shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=0)
         for line in iter(proc.stderr.readline, b''):
             self.mainui.log(line.decode())
         
         for line in iter(proc.stdout.readline, b''):
             self.mainui.log(line.decode())
         proc.communicate()
-            
         time.sleep(0.5)
-            
+        
+    def fixFilePermissions(self, folder):
+        if folder:
+            # don't EVER change permissions outside of /home/
+            if folder.startswith('/home/'):  
+                print ("fixing file permissions %s" % folder)
+                cmd = ['sudo', 'chown', '-R %s:%s' % (self.user, self.user), folder]
+                self.runCmd(cmd)
+            else:
+                print ("exam folder location outside of /home/ is not allowed")
+        else:
+            print ("no folder given")
             
     def update(self):
+        #first check permissions
+        self.fixFilePermissions(self.work_directory)
         #update life EXAM ----------------------------------------------------------------------------------
         branches = self.mainui.branches
         if self.mainui.switchbtn.getValue():
@@ -47,6 +60,7 @@ class Updater(threading.Thread):
         
         #do we use DEV Version of life-exam, or stable
         #stable ... main, Development ... DEV
+        
         #step1 back to https
         cmd = "cd %s/applications/life-exam " % (self.work_directory)
         cmd += "&& git remote set-url origin https://github.com/valueerrorx/life-exam.git"
@@ -71,6 +85,11 @@ class Updater(threading.Thread):
         
         #update life UPDATE ----------------------------------------------------------------------------------
         self.mainui.log("\nUpdating LiFE Update...\n")
+        #step1 back to https
+        cmd = "cd %s/applications/life-update " % (self.work_directory)
+        cmd += "&& git remote set-url origin https://github.com/valueerrorx/life-update.git"
+        self.runCmd(cmd)
+        
         cmd = "cd %s/applications/life-update && git pull " %(self.work_directory)
         self.runCmd(cmd)
      

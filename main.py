@@ -38,7 +38,6 @@ class MeinDialog(QtWidgets.QDialog):
         
         self.ui.update.clicked.connect(self.onUpdate)        # setup Slots
         self.ui.exit.clicked.connect(self.onAbbrechen)     
-        self.ui.fixperm.clicked.connect(lambda: self.fixFilePermissions(WORK_DIRECTORY))
        
         self.onsignal.connect(lambda: self.uienable())    #setup custom slots
         self.offsignal.connect(lambda: self.uidisable())
@@ -56,21 +55,7 @@ class MeinDialog(QtWidgets.QDialog):
         
         #load Config
         self.loadConfig()
-        
-
-    def fixFilePermissions(self, folder):
-        if folder:
-            if folder.startswith('/home/'):  # don't EVER change permissions outside of /home/
-                print ("fixing file permissions")
-                print(WORK_DIRECTORY)
-                chowncommand = "sudo chown -R %s:%s %s" % (USER, USER, folder)
-                os.system(chowncommand)
-            else:
-                print ("exam folder location outside of /home/ is not allowed")
-        else:
-            print ("no folder given")
-
-
+    
     def uienable(self):
         self.ui.update.setEnabled(True)
         line = "Internetanbindung ok!"
@@ -92,7 +77,7 @@ class MeinDialog(QtWidgets.QDialog):
         self.ui.update.setEnabled(False)
         #stop Inet Checker
         self.check = False;
-        update = Updater(self, WORK_DIRECTORY)
+        update = Updater(self, WORK_DIRECTORY, USER)
         update.start()
     
     def uifinished(self):
