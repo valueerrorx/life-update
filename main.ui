@@ -143,16 +143,6 @@
            </property>
           </spacer>
          </item>
-         <item>
-          <widget class="QPushButton" name="dummySwitch">
-           <property name="styleSheet">
-            <string notr="true">margin-right: 6px</string>
-           </property>
-           <property name="text">
-            <string>PushButton</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
        <item>

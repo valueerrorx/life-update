@@ -12,11 +12,11 @@ class SwitchButton(QtWidgets.QWidget):
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         self.__labeloff = QtWidgets.QLabel(self)
         self.__labeloff.setText(w2)
-        self.__labeloff.setStyleSheet("""color: rgb(120, 120, 120); font-weight: bold;""")
+        self.__labeloff.setStyleSheet("""color: rgb(120, 120, 120); margin-top:2px; font-weight: bold;""")
         self.__background  = Background(self)
         self.__labelon = QtWidgets.QLabel(self)
         self.__labelon.setText(w1)
-        self.__labelon.setStyleSheet("""color: rgb(255, 255, 255); font-weight: bold;""")
+        self.__labelon.setStyleSheet("""color: rgb(255, 255, 255);  margin-top:2px; font-weight: bold;""")
         self.__circle      = Circle(self)
         self.__circlemove  = None
         self.__ellipsemove = None

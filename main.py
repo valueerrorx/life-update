@@ -47,10 +47,10 @@ class MeinDialog(QtWidgets.QDialog):
         
         #Switch Button
         layout = self.ui.devLayout
-        layout.removeWidget(self.ui.dummySwitch)        
+        #layout.removeWidget(self.ui.dummySwitch)        
         
         # Text, LabelOn xPos, Text, LabelOff xPos, width
-        self.switchbtn = SwitchButton(self, "Ja", 15, "Nein", 25, 60)
+        self.switchbtn = SwitchButton(self, "Ja", 15, "Nein", 25, 70)
         layout.addWidget(self.switchbtn)
         
         #load Config
@@ -128,7 +128,7 @@ class MeinDialog(QtWidgets.QDialog):
             useit = 0 
         data ={
             "development": {
-                "stable_branch": "master",
+                "stable_branch": "20.04",
                 "dev_branch": "DEV",
                 "use": useit,
             },

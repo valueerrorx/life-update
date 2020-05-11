@@ -3,6 +3,7 @@
 import subprocess
 import threading
 import time
+import os
 
 class Updater(threading.Thread):
     """ 
@@ -24,12 +25,14 @@ class Updater(threading.Thread):
             
     def runCmd(self, cmd):
         ''' runs a command '''
-        proc = subprocess.Popen(cmd,  shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE, bufsize=0)
+        proc = subprocess.Popen(cmd,  shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=0)
         for line in iter(proc.stderr.readline, b''):
             self.mainui.log(line.decode())
         
         for line in iter(proc.stdout.readline, b''):
             self.mainui.log(line.decode())
+            
+            
         proc.communicate()
         time.sleep(0.5)
         
@@ -38,8 +41,12 @@ class Updater(threading.Thread):
             # don't EVER change permissions outside of /home/
             if folder.startswith('/home/'):  
                 print ("fixing file permissions %s" % folder)
-                cmd = ['sudo', 'chown', '-R %s:%s' % (self.user, self.user), folder]
-                self.runCmd(cmd)
+                #cmd = ['sudo', 'chown', '-R', '%s:%s' % (self.user, self.user), folder]
+                #self.runCmd(cmd)
+                
+                command = "sudo chown -R %s:%s %s" % (self.user, self.user, folder)
+                print(command)
+                os.system(command)
             else:
                 print ("exam folder location outside of /home/ is not allowed")
         else:

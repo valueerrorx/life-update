@@ -1,4 +1,4 @@
 development:
   dev_branch: DEV
-  stable_branch: master
+  stable_branch: '20.04'
   use: 1
