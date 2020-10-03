@@ -39,7 +39,7 @@ class Updater(threading.Thread):
             # don't EVER change permissions outside of /home/
             if folder.startswith('/home/'):
                 print("fixing file permissions %s" % folder)
-                cmd = ['sudo', 'chown', '-R %s:%s' % (self.user, self.user), folder]
+                cmd = 'sudo chown -R %s:%s %s' % (self.user, self.user, folder)
                 self.runCmd(cmd)
             else:
                 print("exam folder location outside of /home/ is not allowed")
